@@ -15,7 +15,10 @@ develop-eggs
 .venv/
 .venv
 .vscode/
-.vscode
+*.vscode
+*.sqlite
+
+secretkeys.py
 
 # Installer logs
 pip-log.txt
