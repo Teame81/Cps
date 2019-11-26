@@ -1,18 +1,16 @@
-from dbModel import db, localDb
+from dbModel import *
 
 #Creates all the tables from dbModels.py
 
 db.create_all()
 
-lokal1 = localDb(8)
-lokal2 = localDb(2)
+#############
+# datablockP = premisesDb(123, 'AIK -shoppen')
+# db.session.add(datablockP)
+# db.session.commit()
 
-print(lokal1.local_id)
-print(lokal2.local_id)
+# datablockD = devices(4, 88)
+# db.session.add(datablockD)
+# db.session.commit()
 
-db.session.add_all([lokal1, lokal2])
-db.session.commit()
-
-print(f"{lokal1.id} och {lokal1.local_id}")
-
-print(lokal2.id)
+# datablockC = 
