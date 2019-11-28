@@ -25,7 +25,7 @@ class A_premises(db.Model):
     __tablename__ = 'premises'
     id = db.Column(db.Integer,primary_key=True)
     # premises id.
-    premises_id = db.Column(db.String(50))
+    premises_id = db.Column(db.String(50), unique = True)
     # This could company name or more.
     short_description = db.Column(db.String(120))
     # One premises can have several devices.
@@ -53,9 +53,13 @@ class A_premises(db.Model):
 #-------------DEVICES START-------------#
 class Device(db.Model):
     __tablename__ = 'devices'
+    # All devices should have a unique id
     device_id = db.Column(db.Integer, primary_key=True)
-    position = db.Column(db.Integer, db.ForeignKey('premises.id'))
+    # In which premisis is this device located?
+    position = db.Column(db.String(50), db.ForeignKey('premises.premises_id'))
+    # Number of people that has passed this device
     visitors = db.relationship('Click' , backref = 'devices', lazy = 'dynamic')
+    
     def __init__(self,device_id, position):
         self.device_id = device_id
         self.position = position
@@ -65,9 +69,11 @@ class Device(db.Model):
 #-------------DEVICES END-------------#
 
 #-------------CLICKS START-------------#
+    # This is the table for click with time stamps that connects to a device.
 class Click(db.Model):
     __tablename__ = 'clicks'
     id = db.Column(db.Integer, primary_key=True)
+    # this is a post for when a person passes thru
     pass_through = db.Column(db.Integer, db.ForeignKey('devices.device_id'))
     
     def __init__(self, pass_through):
