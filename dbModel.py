@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
 
-basedir = os.path.abspath(os.path.dirname(__file__)) # __file__ is the name of this file = dbModel.py -- os.path.dirname = c:\dev\flask\cps
+#basedir = os.path.abspath(os.path.dirname(__file__)) # __file__ is the name of this file = dbModel.py -- os.path.dirname = c:\dev\flask\cps
 
 ######################## INITIATE DATABASE ########################
 app = Flask(__name__)
@@ -36,8 +36,11 @@ class A_premises(db.Model):
     def __init__ (self, premises_id, short_description, devices):
         self.premises_id = premises_id
         self.short_description = short_description
-        self.devices = devices
+        if devices is not None:
+            self.devices = devices
 
+    def json(self):
+        return {'Premises': self.premises_id, 'Description' : self.short_description}
 
     def __repr__(self):
         if self.devices:
@@ -63,7 +66,12 @@ class Device(db.Model):
     def __init__(self,device_id, position):
         self.device_id = device_id
         self.position = position
-        
+
+    def json(self):
+        return {'Device_id' : self.device_id,
+                 'Position' : self.position,
+                 'Visitors' : self.visitors}
+
     def __repr__(self):
         pass
 #-------------DEVICES END-------------#
