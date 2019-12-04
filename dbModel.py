@@ -1,21 +1,9 @@
-import os
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from datetime import datetime
-
-#basedir = os.path.abspath(os.path.dirname(__file__)) # __file__ is the name of this file = dbModel.py -- os.path.dirname = c:\dev\flask\cps
+from settings import db
 
 ######################## INITIATE DATABASE ########################
-app = Flask(__name__)
+#app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:aik123@localhost:5432/cps'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-
-db = SQLAlchemy(app)
-
-Migrate(app, db)
+#Migrate(app, db)
 
 ######################## DATA BASE MODELS ########################
 
@@ -40,7 +28,7 @@ class A_premises(db.Model):
             self.devices = devices
 
     def json(self):
-        return {'Premises': self.premises_id, 'Description' : self.short_description}
+        return {'id': self.id, 'Premises': self.premises_id, 'Description' : self.short_description}
 
     def __repr__(self):
         if self.devices:
