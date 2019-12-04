@@ -1,3 +1,6 @@
+# NOTES to me: 
+# Check into https://flask-restful.readthedocs.io/en/latest/api.html
+
 from flask import Flask, session
 from settings import db, app, api
 from flask_jwt import JWT, jwt_required
@@ -8,25 +11,29 @@ from dbModel import A_premises, Device, Click
 
 #Migrate(app, db)
 
+
+
 #-------------Premises Post START-------------#
 class Premises(Resource):
       def post(self, premises_id, short_description = 'None provided'):
+            print("First")
             try:
+                  print("Second")
                   ThisPremises = A_premises(premises_id, short_description, None)
                   print(ThisPremises.json())
                   if ThisPremises:
                         db.session.add(ThisPremises)
                         db.session.commit()
-                        return ThisPremises.json()                     
+                        return ThisPremises.json(), 201                     
                   else:
-                        return {'Error':'Wrong input'},405            
-            except ValueError:
-                  print("Post error wrong format")                        
+                        return {'Error':'Wrong input'},404          
+            except:
+                  print("Error in posting")                        
             
 #-------------Premises Post END-------------#
 
 #-------------Premises Delete / Get  START-------------#
-class DeletePremises(Resource):
+class DeletePostPremises(Resource):
       def delete(self, premises_id):
             DeleteThisPremises = A_premises.query.filter_by(premises_id=premises_id).first()
             db.session.delete(DeleteThisPremises)
@@ -52,8 +59,9 @@ class ShowAllPremises(Resource):
 
 #-------------ROUTING-------------#
 api.add_resource(Premises, '/premises/premises_id="<string:premises_id>"&short_desc="<string:short_description>"')   
-api.add_resource(DeletePremises, '/premises/premises_id="<string:premises_id>"')
+api.add_resource(DeletePostPremises, '/premises/Dp/premises_id="<string:premises_id>"')
 api.add_resource(ShowAllPremises, '/premises/All')
+api.error_router
 
 # @app.route('/')
 # def cps():
