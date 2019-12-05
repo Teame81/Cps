@@ -2,33 +2,30 @@
 # Check into https://flask-restful.readthedocs.io/en/latest/api.html
 
 from flask import Flask, session
-from settings import db, app, api
+from settings import db, app, api, migrate
 from flask_jwt import JWT, jwt_required
 #from flask_sqlalchemy import SQLAlchemy
-#from flask_migrate import Migrate
+from flask_migrate import Migrate
 from flask_restful import Resource
 from dbModel import A_premises, Device, Click
 
 #Migrate(app, db)
 
-
+#########################START PREMISES SECTION#########################
 
 #-------------Premises Post START-------------#
 class Premises(Resource):
       def post(self, premises_id, short_description = 'None provided'):
             print("First")
-            try:
-                  print("Second")
-                  ThisPremises = A_premises(premises_id, short_description, None)
-                  print(ThisPremises.json())
-                  if ThisPremises:
-                        db.session.add(ThisPremises)
-                        db.session.commit()
-                        return ThisPremises.json(), 201                     
-                  else:
-                        return {'Error':'Wrong input'},404          
-            except:
-                  print("Error in posting")                        
+           
+            ThisPremises = A_premises(premises_id, short_description, None)
+            print(ThisPremises.json())
+            if ThisPremises:
+                  db.session.add(ThisPremises)
+                  db.session.commit()
+                  return ThisPremises.json(), 201                     
+            else:
+                  return {'Error':'Wrong input'},404 
             
 #-------------Premises Post END-------------#
 
@@ -57,15 +54,39 @@ class ShowAllPremises(Resource):
 
 #-------------All Premises STOP-------------#
 
+#########################END PREMISES SECTION#########################
+
+#########################START CLICKS SECTION#########################
+
+class PostClick(Resource):
+      def post(self, pass_through):
+            theClick = Click(1)
+            db.session.add(theClick)
+            db.session.commit()
+            return theClick.json(), 201
+
+#########################END CLICKS SECTION#########################
+
+#########################START DEVICES SECTION#########################
+
+class ADevice(Resource):
+      def post(self, position):
+            NewDevice = Device(position)
+            db.session.add(NewDevice)
+            db.session.commit()
+            return NewDevice.json(),201
+    
+
+#########################END DEVICES SECTION#########################
+
 #-------------ROUTING-------------#
 api.add_resource(Premises, '/premises/premises_id="<string:premises_id>"&short_desc="<string:short_description>"')   
 api.add_resource(DeletePostPremises, '/premises/Dp/premises_id="<string:premises_id>"')
 api.add_resource(ShowAllPremises, '/premises/All')
-api.error_router
+api.add_resource(PostClick, '/click/id="<int:pass_through>"')
+api.add_resource(ADevice, '/device/position="<int:position>"')
 
-# @app.route('/')
-# def cps():
-#     return HelloWorld()
 
+# Start a test server
 if __name__ == '__main__':
-  app.run(host='127.0.0.1', port=8000, debug=True)
+  app.run(host='127.0.0.1', port=5000, debug=True)

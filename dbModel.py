@@ -1,4 +1,8 @@
-from settings import db
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from datetime import datetime
+from settings import db, app, migrate
 
 ######################## INITIATE DATABASE ########################
 #app = Flask(__name__)
@@ -16,9 +20,10 @@ class A_premises(db.Model):
     premises_id = db.Column(db.String(50), unique = True)
     # This could company name or more.
     short_description = db.Column(db.String(120))
+
     # One premises can have several devices.
         # ex: column_name = db.relationship('Class to make relationship to', backref = 'this table name')
-    devices = db.relationship('Device', backref = 'A_premises', lazy = 'dynamic')
+    devices = db.relationship('Device', backref = 'premises', lazy = 'dynamic')
         
    # Initate data into the premises table
     def __init__ (self, premises_id, short_description, devices):
@@ -45,20 +50,18 @@ class A_premises(db.Model):
 class Device(db.Model):
     __tablename__ = 'devices'
     # All devices should have a unique id
-    device_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     # In which premisis is this device located?
-    position = db.Column(db.String(50), db.ForeignKey('premises.premises_id'))
+    position = db.Column(db.Integer, db.ForeignKey('premises.id'))
     # Number of people that has passed this device
     visitors = db.relationship('Click' , backref = 'devices', lazy = 'dynamic')
     
-    def __init__(self,device_id, position):
-        self.device_id = device_id
+    def __init__(self, position):
         self.position = position
 
     def json(self):
-        return {'Device_id' : self.device_id,
-                 'Position' : self.position,
-                 'Visitors' : self.visitors}
+        return {'Device_id' : self.id,
+                 'Position' : self.position}
 
     def __repr__(self):
         pass
@@ -70,12 +73,13 @@ class Click(db.Model):
     __tablename__ = 'clicks'
     id = db.Column(db.Integer, primary_key=True)
     # this is a post for when a person passes thru
-    pass_through = db.Column(db.Integer, db.ForeignKey('devices.device_id'))
+    pass_through = db.Column(db.Integer, db.ForeignKey('devices.id'))
     
     def __init__(self, pass_through):
         self.pass_through = pass_through
     
     def __repr__(self):
         pass
-
+    def json(self):
+        return {'Device_id' : self.pass_through}
 #-------------CLICKS START-------------#

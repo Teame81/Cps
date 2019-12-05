@@ -2,7 +2,6 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from datetime import datetime
 from secretkeys import DBinfo
 from flask_restful import Resource, Api
 
@@ -19,3 +18,7 @@ DBname = DBinfo["Database"]
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{DBuser}:{DBpassword}@localhost:5432/{DBname}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
+
+db.create_all()
