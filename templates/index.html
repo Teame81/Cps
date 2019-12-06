@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CPS</title>
+</head>
+<body>
+    <h1>Welcome to CPS</h1>
+    Time now is : {{Jtimestamp}} <br>
+    <img src="../static/knowledge.jpg" alt="" width="5%" height="5%">
+
+    <ul>
+
+        <br>Premises:<br>
+        {% for premises in Jpremises %}
+        <li>{{ premises.json() }}</li>
+        {% endfor %}
+        
+        <br>Devices: <br>
+        {% for device in Jdevices %}
+                <li>{{ device.json()}}</li>
+        {% endfor %}
+        
+        <br> Clicks: <br>
+        {% for click in Jclicks %}
+               <li>{{ click.json() }}</li> 
+        {% endfor %}
+        
+
+
+    </ul>
+</body>
+</html>

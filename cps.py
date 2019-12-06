@@ -1,10 +1,9 @@
 # NOTES to me: 
 # Check into https://flask-restful.readthedocs.io/en/latest/api.html
 
-from flask import Flask, session
+from flask import Flask, session, render_template
 from settings import db, app, api, migrate
 from flask_jwt import JWT, jwt_required
-#from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restful import Resource
 from dbModel import A_premises, Device, Click
@@ -90,8 +89,18 @@ api.add_resource(ADevice, '/device/position="<int:position>"')
 
 @app.route('/')
 def home():
-      theTimeStamp = datetime.now()
-      return f"Timestamp: {theTimeStamp}"
+      timestamp = datetime.now()
+      premises = A_premises.query.all()
+      devices = Device.query.all()
+      clicks = Click.query.all()
+      return render_template('index.html',Jtimestamp = timestamp,
+                              Jpremises = premises,
+                              Jdevices = devices,
+                              Jclicks = clicks
+      )
+@app.route('/<wrong_page>')
+def catch(wrong_page):
+      return f"No pages called {wrong_page} exists",404
 
 # Start a test server
 if __name__ == '__main__':

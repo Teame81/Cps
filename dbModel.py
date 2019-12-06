@@ -35,14 +35,14 @@ class A_premises(db.Model):
     def json(self):
         return {'id': self.id, 'Premises': self.premises_id, 'Description' : self.short_description}
 
-    def __repr__(self):
-        if self.devices:
-            print(f"---Start---")
-            for device in self.devices:
-                print(f"{device} is present in {self.premises_id}")
-            return f"---End---"
-        else:
-            return f"Premises have no device(s) yet."
+    # def __repr__(self):
+    #     if self.devices:
+    #         print(f"---Start---")
+    #         for device in self.devices:
+    #             print(f"{device} is present in {self.premises_id}")
+    #         return f"---End---"
+    #     else:
+    #         return f"Premises have no device(s) yet."
 #-------------PREMISES END-------------#
 
 
@@ -82,5 +82,6 @@ class Click(db.Model):
     def __repr__(self):
         pass
     def json(self):
-        return {'Device_id' : self.pass_through}
+        return {'Device_id' : self.pass_through,
+                'Time stamp' : self.time_stamp}
 #-------------CLICKS START-------------#
