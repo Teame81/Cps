@@ -74,9 +74,10 @@ class Click(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # this is a post for when a person passes thru
     pass_through = db.Column(db.Integer, db.ForeignKey('devices.id'))
-    
-    def __init__(self, pass_through):
+    time_stamp = db.Column(db.DateTime)
+    def __init__(self, pass_through, time_stamp):
         self.pass_through = pass_through
+        self.time_stamp = time_stamp
     
     def __repr__(self):
         pass

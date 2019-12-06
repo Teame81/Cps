@@ -8,6 +8,7 @@ from flask_jwt import JWT, jwt_required
 from flask_migrate import Migrate
 from flask_restful import Resource
 from dbModel import A_premises, Device, Click
+from datetime import datetime
 
 #Migrate(app, db)
 
@@ -60,10 +61,11 @@ class ShowAllPremises(Resource):
 
 class PostClick(Resource):
       def post(self, pass_through):
-            theClick = Click(1)
+            theTimeStamp = datetime.now()
+            theClick = Click(pass_through, theTimeStamp)
             db.session.add(theClick)
             db.session.commit()
-            return theClick.json(), 201
+            return (f"{theClick.json()} : '{theTimeStamp}'"), 201
 
 #########################END CLICKS SECTION#########################
 
@@ -86,6 +88,10 @@ api.add_resource(ShowAllPremises, '/premises/All')
 api.add_resource(PostClick, '/click/id="<int:pass_through>"')
 api.add_resource(ADevice, '/device/position="<int:position>"')
 
+@app.route('/')
+def home():
+      theTimeStamp = datetime.now()
+      return f"Timestamp: {theTimeStamp}"
 
 # Start a test server
 if __name__ == '__main__':
