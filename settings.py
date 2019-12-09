@@ -12,13 +12,13 @@ app.config['SECRET_KEY'] = 'mysecretkey'
 api = Api(app)
 
 # DC Setup, connection
-DBuser = "root"
+DBuser = "teame81"
 DBpassword = "aik123aik"
 DBname = "cps"
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql://{DBuser}:{DBpassword}@localhost:3306/{DBname}"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql://{DBuser}:{DBpassword}@teame81.mysql.pythonanywhere-services.com/{DBname}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-db.create_all()
+#db.create_all()
