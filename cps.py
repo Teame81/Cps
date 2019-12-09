@@ -102,4 +102,6 @@ def catch(wrong_page):
 
 # Start a test server
 if __name__ == '__main__':
-  app.run(host='127.0.0.1', port=5000, debug=True)
+  app.run()
+  #inside app.run function during devlopment :
+  #host='127.0.0.1', port=5000, debug=True
