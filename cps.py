@@ -1,4 +1,4 @@
-# NOTES to me: 
+# NOTES to me:
 # Check into https://flask-restful.readthedocs.io/en/latest/api.html
 
 from flask import Flask, session, render_template
@@ -17,16 +17,15 @@ from datetime import datetime
 class Premises(Resource):
       def post(self, premises_id, short_description = 'None provided'):
             print("First")
-           
             ThisPremises = A_premises(premises_id, short_description, None)
             print(ThisPremises.json())
             if ThisPremises:
                   db.session.add(ThisPremises)
                   db.session.commit()
-                  return ThisPremises.json(), 201                     
+                  return ThisPremises.json(), 201
             else:
-                  return {'Error':'Wrong input'},404 
-            
+                  return {'Error':'Wrong input'},404
+
 #-------------Premises Post END-------------#
 
 #-------------Premises Delete / Get  START-------------#
@@ -36,13 +35,13 @@ class DeletePostPremises(Resource):
             db.session.delete(DeleteThisPremises)
             db.session.commit()
             return {'Note' : f'{DeleteThisPremises.json()} Delete success'}
-      
+
       def get(self, premises_id):
             ThisPremises = A_premises.query.filter_by(premises_id=premises_id).first()
             if ThisPremises:
                   return ThisPremises.json()
             else:
-                  return {'Premises':None},404            
+                  return {'Premises':None},404
 #-------------Premises Delete / Get END-------------#
 
 #-------------All Premises START-------------#
@@ -76,7 +75,6 @@ class ADevice(Resource):
             db.session.add(NewDevice)
             db.session.commit()
             return NewDevice.json(),201
-    
 
 #########################END DEVICES SECTION#########################
 
